@@ -50,23 +50,25 @@ const tdpController = {
       } catch (error) {throw(error)}
 
     }
-    if (results.length<1) res.json([]) // on retourne un tableau vide si pas de resultat a la requette et ce afin de respecter le format de reponse attendu par le front
-    const reponse = results.map((result)=> {
-      return{ //mise en forme de la reponse afin qu'elle respecte le format attendu par le front
-        rep:result.repartiteur.code_name+result.repartiteur.zip,
-        salle:result.salle,
-        rco:result.rco,
-        ferme:result.ferme,
-        level:result.level,
-        option: result.opt?result.opt.opt_label:null,
-        cd:result.repartiteur.zip,
-        regletteType:result.reglette.reglette_label,
-        regletteNbr:result.reglette_nbr,
-        tdpId:result.repartiteur.code_name+result.repartiteur.zip+result.reglette.reglette_label+result.reglette_nbr,
-        _id:result.repartiteur.code_name+result.repartiteur.zip+result.reglette.reglette_label+result.reglette_nbr
-      }
-    })
-    res.json(reponse);
+    if (results.length<1) res.json([])
+    else {// on retourne un tableau vide si pas de resultat a la requette et ce afin de respecter le format de reponse attendu par le front
+      const reponse = results.map((result)=> {
+        return{ //mise en forme de la reponse afin qu'elle respecte le format attendu par le front
+          rep:result.repartiteur.code_name+result.repartiteur.zip,
+          salle:result.salle,
+          rco:result.rco,
+          ferme:result.ferme,
+          level:result.level,
+          option: result.opt?result.opt.opt_label:null,
+          cd:result.repartiteur.zip,
+          regletteType:result.reglette.reglette_label,
+          regletteNbr:result.reglette_nbr,
+          tdpId:result.repartiteur.code_name+result.repartiteur.zip+result.reglette.reglette_label+result.reglette_nbr,
+          _id:result.repartiteur.code_name+result.repartiteur.zip+result.reglette.reglette_label+result.reglette_nbr
+        }
+      })
+      res.json(reponse);
+    } 
   },
 
   async searchByPosition(req, res) {
@@ -153,7 +155,7 @@ const tdpController = {
           _id:result.repartiteur.code_name+result.repartiteur.zip+result.reglette.reglette_label+result.reglette_nbr
         }
       })
-      throw(reponse)
+      //throw(reponse)
       res.json(reponse);// envoie de la reponse sous forme de json
     } catch (error) {throw(error)}
   },
