@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const sequelize = require("./app/sequelize");
+const sequelize = require("./app/tdpSeq");
 const router = require("./app/router");
 const app = express();
 const bodyParser = require("body-parser");
