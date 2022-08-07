@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
-const sequelize = require("./app/tdpSeq");
+const tdpbddConnect = require("./app/tdpSeq");
+const geobddConnect = require("./app/geoSeq")
 const router = require("./app/router");
 const app = express();
 const bodyParser = require("body-parser");
@@ -8,8 +9,12 @@ const PORT = process.env.PORT || 3000;
 
 (async function () {
   try {
-    console.log("Try to connect the database.\nPlease wait...");
-    await sequelize.authenticate();
+    console.log("Try to connect the tdp database.\nPlease wait...");
+    await tdpbddConnect.authenticate();
+    console.log("Connection has been established successfully.");
+
+    console.log("Try to connect the geoLock database.\nPlease wait...");
+    await geobddConnect.authenticate();
     console.log("Connection has been established successfully.");
 
     app.use(bodyParser.urlencoded({ extended: false }));
