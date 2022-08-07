@@ -11,7 +11,6 @@ const tdpSchema = {
   ferme: { type: Sequelize.INTEGER, allowNull: false },
   level: { type: Sequelize.INTEGER, allowNull: false },
   opts: { type: Sequelize.INTEGER, allowNull: true },
-
 };
 module.exports = sequelize.define("tdps", tdpSchema, {
   tableName: "tdps",
