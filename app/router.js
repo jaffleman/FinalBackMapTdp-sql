@@ -13,7 +13,7 @@ router.put("/tdp/update", tdpController.update);
 router.delete("/tdp/delete", tdpController.delete);
 router.get("/tdp/updateid", tdpController.updateid);
 
-router.post("/geolock/search", geoController.search);
+router.post("/geolock/findAllMarker", geoController.findAllMarker);
 router.post("/geolock/create", geoController.create);
 router.put("/geolock/update", geoController.update);
 router.delete("/geolock/delete", geoController.delete);

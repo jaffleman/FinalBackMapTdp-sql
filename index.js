@@ -32,7 +32,10 @@ const PORT = process.env.PORT || 3000;
       );
       next();
     });
-
+    app.use((req, res, next)=>{
+      console.log('>>REQUEST<<', req.url)
+      next()
+    })
     app.use(router);
     app.listen(PORT, () => {
       console.log(`Listening on http://localhost:${PORT}`);

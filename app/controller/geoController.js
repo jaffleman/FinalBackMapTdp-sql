@@ -6,6 +6,7 @@ const { Op } = require("sequelize");
 marker.hasMany(acces, {foreignKey:'id'}); // id d'un element de repartiteur correspond a plusieurs elements de tdps (1 to many)
 acces.belongsTo(marker,{foreignKey:'mk'});//le champ 'reglette_type' d'un element de tdps correspond a un seul element de la table reglette (1 to 1)
 const TOLERANCE= 5
+const SCREAN_TOLERANCE= 70
 const geoControler = {
 
   async search(req, res) {
@@ -19,11 +20,32 @@ const geoControler = {
   },
 
 
-  async searchRep(req, res) {
+  async findAllMarker(req, res) {
+    console.log(req.body)
+    const longitude = Math.round(req.body.longitude * 100000)
+    const latitude = Math.round(req.body.latitude * 100000)
+    const intervalLat = [latitude-SCREAN_TOLERANCE, latitude+SCREAN_TOLERANCE]
+    const intervalLon = [longitude-SCREAN_TOLERANCE, longitude+SCREAN_TOLERANCE]
+    const markers = await marker.findAll({
+      attributes: ["id",'longitude','latitude'], // les champs que l'on souhaite en retour de la requette
+      where: { //les contraintes
+        longitude: {[Op.between]:intervalLon},
+        latitude:{[Op.between]:intervalLat}
+      },
+    })
+    const cosvertMarkers = markers.map(m=>{
+      return{
+        longitude:(m.longitude/100000),
+        latitude:(m.latitude/100000),
+        id:m.id
+      }
+    })
+    res.json(cosvertMarkers)
   },
 
 
   async create(req, res ) {
+    console.log(req.body)
     const longitude = Math.round(req.body.longitude * 100000)
     const latitude = Math.round(req.body.latitude * 100000)
     const intervalLat = [latitude-TOLERANCE, latitude+TOLERANCE]
