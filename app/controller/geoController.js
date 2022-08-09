@@ -9,9 +9,16 @@ const TOLERANCE= 5
 const SCREAN_TOLERANCE= 70
 const geoControler = {
 
-  async search(req, res) {
+  async getAllAcces(req, res) {
     console.log(req.body)
-    res.json({return:'reponse'})
+    const accesTab = await acces.findAll({
+      attributes: ["id",'type','code'], // les champs que l'on souhaite en retour de la requette
+      where: { //les contraintes
+        mk: req.body.id,
+      },
+    })
+    console.log(accesTab)
+    res.json(accesTab)
   },
 
 
