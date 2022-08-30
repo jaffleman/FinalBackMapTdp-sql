@@ -5,10 +5,11 @@ const { Op } = require("sequelize");
 
 marker.hasMany(acces, {foreignKey:'id'}); // id d'un element de repartiteur correspond a plusieurs elements de tdps (1 to many)
 acces.belongsTo(marker,{foreignKey:'mk'});//le champ 'reglette_type' d'un element de tdps correspond a un seul element de la table reglette (1 to 1)
+
 const TOLERANCE= 5
 const SCREAN_TOLERANCE= 70
-const geoControler = {
 
+const geoControler = {
   async getAllAcces(req, res) {
     console.log(req.body)
     const accesTab = await acces.findAll({
@@ -31,8 +32,10 @@ const geoControler = {
     console.log(req.body)
     const longitude = Math.round(req.body.longitude * 100000)
     const latitude = Math.round(req.body.latitude * 100000)
-    const intervalLat = [latitude-SCREAN_TOLERANCE, latitude+SCREAN_TOLERANCE]
-    const intervalLon = [longitude-SCREAN_TOLERANCE, longitude+SCREAN_TOLERANCE]
+    const longDelta = Math.round(req.body.longitudeDelta * 100000)|SCREAN_TOLERANCE
+    const latDelta = Math.round(req.body.latitudeDelta * 100000)|SCREAN_TOLERANCE
+    const intervalLat = [latitude-latDelta, latitude+latDelta]
+    const intervalLon = [longitude-longDelta, longitude+longDelta]
     const markers = await marker.findAll({
       attributes: ["id",'longitude','latitude'], // les champs que l'on souhaite en retour de la requette
       where: { //les contraintes
