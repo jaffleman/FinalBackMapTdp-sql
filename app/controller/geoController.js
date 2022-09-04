@@ -37,7 +37,7 @@ const geoControler = {
     const intervalLat = [latitude-latDelta, latitude+latDelta]
     const intervalLon = [longitude-longDelta, longitude+longDelta]
     const markers = await marker.findAll({
-      attributes: ["id",'longitude','latitude'], // les champs que l'on souhaite en retour de la requette
+      attributes: ["id",'longitude','latitude','author','adresse','accesNbr','createdDate'], // les champs que l'on souhaite en retour de la requette
       where: { //les contraintes
         longitude: {[Op.between]:intervalLon},
         latitude:{[Op.between]:intervalLat}
@@ -47,7 +47,11 @@ const geoControler = {
       return{
         longitude:(m.longitude/100000),
         latitude:(m.latitude/100000),
-        id:m.id
+        id:m.id,
+        author:m.author,
+        adresse:m.adresse,
+        accesNbr:m.accesNbr,
+        createdDate:m.createdDate===null?m.createdDate:new Date(m.createdDate).toDateString()
       }
     })
     res.json(cosvertMarkers)
@@ -68,7 +72,10 @@ const geoControler = {
       },
       defaults:{
         longitude,
-        latitude
+        latitude,
+        author:req.body.author||'unknow',
+        adresse:req.body.adresse||'unknow',
+        createdDate: new Date()
       }
     })
     .catch((err) => {throw(err)});
