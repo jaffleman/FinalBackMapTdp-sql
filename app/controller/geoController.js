@@ -2,6 +2,7 @@ const tdps = require("../models/tdp/tdpModel");
 const marker = require("../models/geolock/markerModel");
 const acces = require('../models/geolock/accesModel');
 const { Op } = require("sequelize");
+const { response } = require("express");
 
 marker.hasMany(acces, {foreignKey:'id'}); // id d'un element de repartiteur correspond a plusieurs elements de tdps (1 to many)
 acces.belongsTo(marker,{foreignKey:'mk'});//le champ 'reglette_type' d'un element de tdps correspond a un seul element de la table reglette (1 to 1)
@@ -97,6 +98,10 @@ const geoControler = {
   },
 
   async delete(req, res) {
+    const suppMarker = await marker.destroy({
+      where:{id:req.body.id}
+    })
+    res.json(suppMarker)
   }
 };
 
