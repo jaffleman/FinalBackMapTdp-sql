@@ -91,6 +91,10 @@ const geoControler = {
 
 
   async update(req, res) {
+      const updated = await acces.bulkCreate(req.body, {
+        updateOnDuplicate: ["type","code"]
+      });
+    res.json(updated)
   },
     
 
