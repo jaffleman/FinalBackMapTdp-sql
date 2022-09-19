@@ -90,13 +90,21 @@ const geoControler = {
   },
 
 
-  async update(req, res) {
+  async updateAcces(req, res) {
       const updated = await acces.bulkCreate(req.body, {
         updateOnDuplicate: ["type","code"]
       });
     res.json(updated)
   },
-    
+  
+  async updateMarker(req, res){
+    const id = req.body.id
+    delete req.body.id
+    const updated = await marker.update(req.body, {
+      where:{ "id" : id}
+    })
+    res.json(updated)
+  },
 
   updateid(req, res) {
   },
