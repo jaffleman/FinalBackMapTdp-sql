@@ -98,10 +98,12 @@ const geoControler = {
   },
   
   async updateMarker(req, res){
-    const id = req.body.id
-    delete req.body.id
-    const updated = await marker.update(req.body, {
-      where:{ "id" : id}
+    const data = {}
+    if ("adresse" in req.body) data.adresse = req.body.adresse
+    if ("longitude" in req.body) data.longitude = Math.round(req.body.longitude * 100000)
+    if ("latitude" in req.body) data.latitude = Math.round(req.body.latitude * 100000)
+    const updated = await marker.update(data, {
+      where:{ "id" : req.body.id}
     })
     res.json(updated)
   },
